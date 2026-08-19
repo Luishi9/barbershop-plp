@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/jestrc",
+  "preset": "ts-jest/presets/default-esm",
+  "extensionsToTreatAsEsm": [
+    ".ts"
+  ],
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/src/**/*.test.ts"
+  ],
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "json"
+  ],
+  "transform": {
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        "useESM": true
+      }
+    ]
+  },
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
+  "setupFiles": [
+    "<rootDir>/src/test/setup.ts"
+  ]
+}

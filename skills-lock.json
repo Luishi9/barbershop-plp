@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "mvc-master": {
+      "source": "gravito-framework/gravito",
+      "sourceType": "github",
+      "computedHash": "95fae28e8e9afea725e502bc82a978d45674951430c812c993723979052587d4"
+    }
+  }
+}
