@@ -117,7 +117,7 @@ if (!SUPABASE_URL || !SERVICE_ROLE) {
   process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL!, SERVICE_ROLE_KEY!, {
+const supabase = createClient(SUPABASE_URL!, SERVICE_ROLE!, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
@@ -138,6 +138,12 @@ async function findProfileByEmail(email: string) {
   return data;
 }
 
+async function findAuthUserByEmail(email: string) {
+  const { data, error } = await supabase.auth.admin.listUsers();
+  if (error) throw new Error(`No se pudo listar usuarios Auth: ${error.message}`);
+  return data.users.find((u) => u.email === email) ?? null;
+}
+
 // ---------------------------------------------------------------------------
 // Steps
 // ---------------------------------------------------------------------------
@@ -152,14 +158,20 @@ async function seedProfiles(): Promise<Record<string, string>> {
     let profile = await findProfileByEmail(u.email);
 
     if (!profile) {
-      log(`Creando usuario Auth: ${u.email}`);
-      const { data: authUser, error: authErr } = await supabase.auth.admin.createUser({
-        email: u.email,
-        password: DEMO_PASSWORD,
-        email_confirm: true,
-      });
-      if (authErr) throw new Error(`No se pudo crear usuario Auth ${u.email}: ${authErr.message}`);
-      const userId = authUser.id as string;
+      let userId = (await findAuthUserByEmail(u.email))?.id;
+
+      if (!userId) {
+        log(`Creando usuario Auth: ${u.email}`);
+        const { data: authUser, error: authErr } = await supabase.auth.admin.createUser({
+          email: u.email,
+          password: DEMO_PASSWORD,
+          email_confirm: true,
+        });
+        if (authErr) throw new Error(`No se pudo crear usuario Auth ${u.email}: ${authErr.message}`);
+        userId = authUser.user?.id as string;
+      } else {
+        log(`Usuario Auth ya existe: ${u.email} — reutilizando (perfil pendiente)`);
+      }
 
       const barberoData = BARBEROS.find((b) => b.id === u.id);
       const { error: profileErr } = await supabase.from('profiles').insert({
@@ -174,7 +186,7 @@ async function seedProfiles(): Promise<Record<string, string>> {
       });
       if (profileErr) throw new Error(`No se pudo insertar perfil ${u.email}: ${profileErr.message}`);
 
-      mockIdToUuid[u.id] = userId;
+      mockIdToUuid[u.id] = userId as string;
       log(`  + perfil creado (${u.rol})`);
     } else {
       mockIdToUuid[u.id] = profile.id;

@@ -4,13 +4,27 @@
 import type { Request, Response } from 'express';
 import type { EstadoCita } from '../models/index.js';
 import { CitaService } from '../services/cita.service.js';
-import { asyncHandler, ok } from '../utils/http.js';
+import { ApiError, asyncHandler, ok } from '../utils/http.js';
 
 const service = new CitaService();
+
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const estados: EstadoCita[] = ['pendiente', 'confirmada', 'completada', 'cancelada'];
 
 /** GET /api/citas — list citas with optional filters (?estado=&fecha=&barberoId=&clienteId=). */
 export const listCitas = asyncHandler(async (req: Request, res: Response) => {
   const { estado, fecha, barberoId, clienteId } = req.query;
+
+  if (estado !== undefined && !estados.includes(estado as EstadoCita)) {
+    throw new ApiError(400, `Estado inválido. Valores permitidos: ${estados.join(', ')}`);
+  }
+  if (barberoId !== undefined && !uuidRegex.test(barberoId as string)) {
+    throw new ApiError(400, 'barberoId inválido');
+  }
+  if (clienteId !== undefined && !uuidRegex.test(clienteId as string)) {
+    throw new ApiError(400, 'clienteId inválido');
+  }
+
   const data = await service.list({
     estado: estado as EstadoCita | undefined,
     fecha: fecha as string | undefined,
