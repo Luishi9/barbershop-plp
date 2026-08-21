@@ -75,10 +75,10 @@ export const AdminAppointments: React.FC<AdminAppointmentsProps> = ({ onUpdate }
 
   return (
     <>
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white">Gestión de Citas</CardTitle>
+            <CardTitle className="text-slate-900 dark:text-white">Gestión de Citas</CardTitle>
             <Button
               onClick={() => setIsDialogOpen(true)}
               className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
@@ -96,15 +96,15 @@ export const AdminAppointments: React.FC<AdminAppointmentsProps> = ({ onUpdate }
                 placeholder="Buscar por cliente, barbero o servicio..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500"
+                className="pl-10 bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500"
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-48 bg-slate-900/50 border-slate-700 text-white">
+              <SelectTrigger className="w-full sm:w-48">
                 <Filter className="w-4 h-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent>
                 <SelectItem value="todos">Todos los estados</SelectItem>
                 <SelectItem value="pendiente">Pendiente</SelectItem>
                 <SelectItem value="confirmada">Confirmada</SelectItem>

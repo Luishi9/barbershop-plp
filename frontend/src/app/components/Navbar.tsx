@@ -1,6 +1,7 @@
 import React from 'react';
 import { LogOut, User as UserIcon } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { ThemeToggle } from '@/app/components/ui/theme-toggle';
 import { User } from '@/types';
 
 interface NavbarProps {
@@ -10,7 +11,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
   return (
-    <nav className="bg-slate-900 border-b border-slate-800 px-6 py-4">
+    <nav className="bg-slate-900 dark:bg-slate-900 border-b border-slate-800 dark:border-slate-800 px-6 py-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-brand to-brand-hover rounded-lg flex items-center justify-center">
@@ -24,9 +25,10 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-slate-800 dark:bg-slate-800 rounded-full flex items-center justify-center">
               <UserIcon className="w-4 h-4 text-brand" />
             </div>
             <div className="text-right">

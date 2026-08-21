@@ -94,10 +94,10 @@ export const AdminClients: React.FC = () => {
 
   return (
     <>
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white">Gestión de Clientes</CardTitle>
+            <CardTitle className="text-slate-900 dark:text-white">Gestión de Clientes</CardTitle>
             <Button
               onClick={() => handleOpenDialog()}
               className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
@@ -114,41 +114,41 @@ export const AdminClients: React.FC = () => {
               placeholder="Buscar por nombre, teléfono o email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500"
+              className="pl-10 bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredClientes.map((cliente) => (
-              <Card key={cliente.id} className="bg-slate-900/50 border-slate-700">
+              <Card key={cliente.id} className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center">
                         <User className="w-5 h-5 text-brand" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">{cliente.nombre}</h3>
+                        <h3 className="font-medium text-slate-900 dark:text-white">{cliente.nombre}</h3>
                       </div>
                     </div>
                     <div className="flex gap-1">
                       <button
                         onClick={() => handleOpenDialog(cliente)}
-                        className="p-1.5 hover:bg-slate-800 rounded transition-colors"
+                        className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
                       >
-                        <Pencil className="w-3.5 h-3.5 text-blue-400" />
+                        <Pencil className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                       </button>
                       <button
                         onClick={() => handleDelete(cliente.id)}
-                        className="p-1.5 hover:bg-slate-800 rounded transition-colors"
+                        className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
                       >
-                        <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                        <Trash2 className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
                       </button>
                     </div>
                   </div>
                   <div className="space-y-1 text-sm">
-                    <p className="text-slate-400">📱 {cliente.telefono}</p>
-                    {cliente.email && <p className="text-slate-400">✉️ {cliente.email}</p>}
+                    <p className="text-slate-600 dark:text-slate-400">📱 {cliente.telefono}</p>
+                    {cliente.email && <p className="text-slate-600 dark:text-slate-400">✉️ {cliente.email}</p>}
                   </div>
                 </CardContent>
               </Card>
@@ -165,7 +165,7 @@ export const AdminClients: React.FC = () => {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
           <DialogHeader>
             <DialogTitle>{editingCliente ? 'Editar' : 'Nuevo'} Cliente</DialogTitle>
           </DialogHeader>
@@ -175,7 +175,7 @@ export const AdminClients: React.FC = () => {
               <Input
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 required
               />
             </div>
@@ -184,7 +184,7 @@ export const AdminClients: React.FC = () => {
               <Input
                 value={telefono}
                 onChange={(e) => setTelefono(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 required
               />
             </div>
@@ -194,7 +194,7 @@ export const AdminClients: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
               />
             </div>
             <div className="flex gap-3 pt-4">
@@ -202,7 +202,7 @@ export const AdminClients: React.FC = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setIsDialogOpen(false)}
-                className="flex-1 border-slate-700"
+                className="flex-1 border-slate-200 dark:border-slate-700"
               >
                 Cancelar
               </Button>

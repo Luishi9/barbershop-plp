@@ -88,19 +88,19 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className="max-w-6xl mx-auto p-6">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
               Bienvenido, {user.nombre.split(' ')[0]}
             </h2>
-            <p className="text-slate-400">Gestiona tus citas y agenda de manera eficiente</p>
+            <p className="text-slate-600 dark:text-slate-400">Gestiona tus citas y agenda de manera eficiente</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-slate-400">Citas Hoy</CardTitle>
+                <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Citas Hoy</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
@@ -108,16 +108,16 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
                       <CalendarIcon className="w-5 h-5 text-brand" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-white">{stats.hoy}</div>
-                    <p className="text-xs text-slate-500">Programadas</p>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.hoy}</div>
+                    <p className="text-xs text-slate-500 dark:text-slate-500">Programadas</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-slate-400">Pendientes</CardTitle>
+                <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Pendientes</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
@@ -125,16 +125,16 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
                     <Clock className="w-5 h-5 text-blue-400" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-white">{stats.pendientes}</div>
-                    <p className="text-xs text-slate-500">Por atender</p>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.pendientes}</div>
+                    <p className="text-xs text-slate-500 dark:text-slate-500">Por atender</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-slate-400">Completadas</CardTitle>
+                <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Completadas</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
@@ -142,8 +142,8 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
                     <CheckCircle className="w-5 h-5 text-green-400" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-white">{stats.completadas}</div>
-                    <p className="text-xs text-slate-500">Total</p>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.completadas}</div>
+                    <p className="text-xs text-slate-500 dark:text-slate-500">Total</p>
                   </div>
                 </div>
               </CardContent>
@@ -152,7 +152,7 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <div className="flex items-center justify-between">
-              <TabsList className="bg-slate-800/50 border border-slate-700 p-1">
+              <TabsList className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-1">
                 <TabsTrigger
                   value="today"
                   className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
@@ -185,9 +185,9 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
             </div>
 
             <TabsContent value="today">
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Citas de Hoy</CardTitle>
+                  <CardTitle className="text-slate-900 dark:text-white">Citas de Hoy</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -200,7 +200,7 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
                         />
                       ))
                     ) : (
-                      <div className="text-center py-12 text-slate-500">
+                      <div className="text-center py-12 text-slate-500 dark:text-slate-500">
                         <CalendarIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
                         <p>No tienes citas programadas para hoy</p>
                       </div>
@@ -211,9 +211,9 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
             </TabsContent>
 
             <TabsContent value="upcoming">
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Próximos 7 días</CardTitle>
+                  <CardTitle className="text-slate-900 dark:text-white">Próximos 7 días</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -226,7 +226,7 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
                         />
                       ))
                     ) : (
-                      <div className="text-center py-12 text-slate-500">
+                      <div className="text-center py-12 text-slate-500 dark:text-slate-500">
                         <CalendarIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
                         <p>No tienes citas próximas</p>
                       </div>
@@ -237,9 +237,9 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
             </TabsContent>
 
             <TabsContent value="pending">
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader>
-                  <CardTitle className="text-white">Citas Pendientes</CardTitle>
+                  <CardTitle className="text-slate-900 dark:text-white">Citas Pendientes</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -252,7 +252,7 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
                         />
                       ))
                     ) : (
-                      <div className="text-center py-12 text-slate-500">
+                      <div className="text-center py-12 text-slate-500 dark:text-slate-500">
                         <Clock className="w-12 h-12 mx-auto mb-3 opacity-50" />
                         <p>No tienes citas pendientes</p>
                       </div>

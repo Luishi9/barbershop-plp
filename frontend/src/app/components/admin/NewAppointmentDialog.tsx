@@ -114,7 +114,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nueva Cita</DialogTitle>
         </DialogHeader>
@@ -122,10 +122,10 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
           <div className="space-y-2">
             <Label>Barbero</Label>
             <Select value={selectedBarbero} onValueChange={setSelectedBarbero} required>
-              <SelectTrigger className="bg-slate-800 border-slate-700">
+              <SelectTrigger>
                 <SelectValue placeholder="Seleccionar barbero" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent>
                 {barberos.map((barbero) => (
                   <SelectItem key={barbero.id} value={barbero.id}>
                     {barbero.nombre}
@@ -141,26 +141,26 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
               <button
                 type="button"
                 onClick={() => setIsNewClient(!isNewClient)}
-                className="text-xs text-brand hover:text-brand"
+                className="text-xs text-brand hover:text-brand-hover"
               >
                 {isNewClient ? 'Seleccionar existente' : '+ Nuevo cliente'}
               </button>
             </div>
-            
+
             {isNewClient ? (
-              <div className="space-y-3 p-3 bg-slate-800/50 rounded-lg">
+              <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
                 <Input
                   placeholder="Nombre"
                   value={newClientName}
                   onChange={(e) => setNewClientName(e.target.value)}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   required
                 />
                 <Input
                   placeholder="Teléfono"
                   value={newClientPhone}
                   onChange={(e) => setNewClientPhone(e.target.value)}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   required
                 />
                 <Input
@@ -168,15 +168,15 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
                   placeholder="Email (opcional)"
                   value={newClientEmail}
                   onChange={(e) => setNewClientEmail(e.target.value)}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 />
               </div>
             ) : (
               <Select value={selectedCliente} onValueChange={setSelectedCliente} required>
-                <SelectTrigger className="bg-slate-800 border-slate-700">
+                <SelectTrigger>
                   <SelectValue placeholder="Seleccionar cliente" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectContent>
                   {clientes.map((cliente) => (
                     <SelectItem key={cliente.id} value={cliente.id}>
                       {cliente.nombre} - {cliente.telefono}
@@ -190,10 +190,10 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
           <div className="space-y-2">
             <Label>Servicio</Label>
             <Select value={selectedServicio} onValueChange={setSelectedServicio} required>
-              <SelectTrigger className="bg-slate-800 border-slate-700">
+              <SelectTrigger>
                 <SelectValue placeholder="Seleccionar servicio" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent>
                 {servicios.map((servicio) => (
                   <SelectItem key={servicio.id} value={servicio.id}>
                     {servicio.nombre} - ${servicio.precio} ({servicio.duracion} min)
@@ -210,7 +210,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
                 type="date"
                 value={fecha}
                 onChange={(e) => setFecha(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 required
               />
             </div>
@@ -220,7 +220,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
                 type="time"
                 value={hora}
                 onChange={(e) => setHora(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 required
               />
             </div>
@@ -231,7 +231,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
             <Textarea
               value={notas}
               onChange={(e) => setNotas(e.target.value)}
-              className="bg-slate-800 border-slate-700 resize-none"
+              className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 resize-none"
               rows={3}
               placeholder="Preferencias del cliente, instrucciones especiales..."
             />
@@ -242,7 +242,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="flex-1 border-slate-700"
+              className="flex-1 border-slate-200 dark:border-slate-700"
             >
               Cancelar
             </Button>

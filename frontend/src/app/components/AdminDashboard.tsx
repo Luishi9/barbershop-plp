@@ -83,10 +83,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
     .slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="max-w-7xl mx-auto p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="bg-slate-800/50 border border-slate-500 p-1">
+          <TabsList className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-500 p-1">
             <TabsTrigger 
               value="dashboard" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
@@ -126,9 +126,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
 
           <TabsContent value="dashboard" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-400">Total Citas</CardTitle>
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Citas</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-3">
@@ -136,16 +136,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                       <Calendar className="w-5 h-5 text-blue-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-white">{stats.totalCitas}</div>
-                      <p className="text-xs text-slate-500">Todas las citas</p>
+                      <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.totalCitas}</div>
+                      <p className="text-xs text-slate-500 dark:text-slate-500">Todas las citas</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-400">Citas Hoy</CardTitle>
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Citas Hoy</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-3">
@@ -153,16 +153,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                       <Clock className="w-5 h-5 text-brand" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-white">{stats.citasHoy}</div>
-                      <p className="text-xs text-slate-500">Programadas</p>
+                      <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.citasHoy}</div>
+                      <p className="text-xs text-slate-500 dark:text-slate-500">Programadas</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-400">Ingresos</CardTitle>
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Ingresos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-3">
@@ -170,16 +170,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                       <DollarSign className="w-5 h-5 text-green-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-white">${stats.ingresos}</div>
-                      <p className="text-xs text-slate-500">Completadas</p>
+                      <div className="text-2xl font-bold text-slate-900 dark:text-white">${stats.ingresos}</div>
+                      <p className="text-xs text-slate-500 dark:text-slate-500">Completadas</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-400">Clientes</CardTitle>
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Clientes</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-3">
@@ -187,17 +187,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                       <Users className="w-5 h-5 text-purple-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-white">{stats.clientes}</div>
-                      <p className="text-xs text-slate-500">Registrados</p>
+                      <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.clientes}</div>
+                      <p className="text-xs text-slate-500 dark:text-slate-500">Registrados</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-slate-900 dark:text-white flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-brand" />
                   Próximas Citas
                 </CardTitle>
@@ -214,7 +214,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                       />
                     ))
                   ) : (
-                    <div className="text-center py-8 text-slate-500">
+                    <div className="text-center py-8 text-slate-500 dark:text-slate-500">
                       No hay citas próximas
                     </div>
                   )}

@@ -100,10 +100,10 @@ export const AdminBarbers: React.FC = () => {
 
   return (
     <>
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white">Gestión de Barberos</CardTitle>
+            <CardTitle className="text-slate-900 dark:text-white">Gestión de Barberos</CardTitle>
             <Button
               onClick={() => handleOpenDialog()}
               className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
@@ -116,7 +116,7 @@ export const AdminBarbers: React.FC = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {barberos.map((barbero) => (
-              <Card key={barbero.id} className="bg-slate-900/50 border-slate-700">
+              <Card key={barbero.id} className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -124,28 +124,28 @@ export const AdminBarbers: React.FC = () => {
                         <Scissors className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">{barbero.nombre}</h3>
-                        <p className="text-sm text-slate-400">{barbero.email}</p>
+                        <h3 className="font-semibold text-slate-900 dark:text-white">{barbero.nombre}</h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{barbero.email}</p>
                       </div>
                     </div>
                     <div className="flex gap-1">
                       <button
                         onClick={() => handleOpenDialog(barbero)}
-                        className="p-2 hover:bg-slate-800 rounded transition-colors"
+                        className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
                       >
-                        <Pencil className="w-4 h-4 text-blue-400" />
+                        <Pencil className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                       </button>
                       <button
                         onClick={() => handleDelete(barbero.id)}
-                        className="p-2 hover:bg-slate-800 rounded transition-colors"
+                        className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
                       >
-                        <Trash2 className="w-4 h-4 text-red-400" />
+                        <Trash2 className="w-4 h-4 text-red-500 dark:text-red-400" />
                       </button>
                     </div>
                   </div>
 
                   {barbero.telefono && (
-                    <p className="text-sm text-slate-400 mb-2">📱 {barbero.telefono}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">📱 {barbero.telefono}</p>
                   )}
 
                   {barbero.especialidad && (
@@ -156,13 +156,13 @@ export const AdminBarbers: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="pt-3 border-t border-slate-700">
-                    <p className="text-xs text-slate-500 mb-2">Horario:</p>
+                  <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
+                    <p className="text-xs text-slate-500 dark:text-slate-500 mb-2">Horario:</p>
                     <div className="flex flex-wrap gap-1">
                       {barbero.disponibilidad.map((disp) => (
                         <span
                           key={disp.dia}
-                          className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded"
+                          className="text-xs px-2 py-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded"
                         >
                           {DIAS_SEMANA[disp.dia]} {disp.horaInicio}-{disp.horaFin}
                         </span>
@@ -184,7 +184,7 @@ export const AdminBarbers: React.FC = () => {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
           <DialogHeader>
             <DialogTitle>{editingBarbero ? 'Editar' : 'Nuevo'} Barbero</DialogTitle>
           </DialogHeader>
@@ -194,7 +194,7 @@ export const AdminBarbers: React.FC = () => {
               <Input
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 required
               />
             </div>
@@ -204,7 +204,7 @@ export const AdminBarbers: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 required
               />
             </div>
@@ -215,7 +215,7 @@ export const AdminBarbers: React.FC = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   placeholder="Mínimo 8 caracteres"
                   minLength={8}
                   required
@@ -227,7 +227,7 @@ export const AdminBarbers: React.FC = () => {
               <Input
                 value={telefono}
                 onChange={(e) => setTelefono(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
               />
             </div>
             <div className="space-y-2">
@@ -235,7 +235,7 @@ export const AdminBarbers: React.FC = () => {
               <Input
                 value={especialidad}
                 onChange={(e) => setEspecialidad(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 placeholder="ej: Cortes clásicos, Diseño, etc."
               />
             </div>
@@ -244,7 +244,7 @@ export const AdminBarbers: React.FC = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setIsDialogOpen(false)}
-                className="flex-1 border-slate-700"
+                className="flex-1 border-slate-200 dark:border-slate-700"
               >
                 Cancelar
               </Button>

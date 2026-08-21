@@ -81,10 +81,10 @@ export const AdminServices: React.FC = () => {
 
   return (
     <>
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white">Gestión de Servicios</CardTitle>
+            <CardTitle className="text-slate-900 dark:text-white">Gestión de Servicios</CardTitle>
             <Button
               onClick={() => handleOpenDialog()}
               className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
@@ -97,7 +97,7 @@ export const AdminServices: React.FC = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {servicios.map((servicio) => (
-              <Card key={servicio.id} className="bg-slate-900/50 border-slate-700">
+              <Card key={servicio.id} className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -105,33 +105,33 @@ export const AdminServices: React.FC = () => {
                         <Sparkles className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">{servicio.nombre}</h3>
-                        <p className="text-sm text-slate-400">{servicio.duracion} minutos</p>
+                        <h3 className="font-semibold text-slate-900 dark:text-white">{servicio.nombre}</h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{servicio.duracion} minutos</p>
                       </div>
                     </div>
                     <div className="flex gap-1">
                       <button
                         onClick={() => handleOpenDialog(servicio)}
-                        className="p-1.5 hover:bg-slate-800 rounded transition-colors"
+                        className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
                       >
-                        <Pencil className="w-3.5 h-3.5 text-blue-400" />
+                        <Pencil className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                       </button>
                       <button
                         onClick={() => handleDelete(servicio.id)}
-                        className="p-1.5 hover:bg-slate-800 rounded transition-colors"
+                        className="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-800 rounded transition-colors"
                       >
-                        <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                        <Trash2 className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
                       </button>
                     </div>
                   </div>
 
                   {servicio.descripcion && (
-                    <p className="text-sm text-slate-400 mb-3">{servicio.descripcion}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">{servicio.descripcion}</p>
                   )}
 
-                  <div className="pt-3 border-t border-slate-700">
+                  <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500">Precio</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-500">Precio</span>
                         <span className="text-xl font-bold text-brand">${servicio.precio}</span>
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export const AdminServices: React.FC = () => {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
           <DialogHeader>
             <DialogTitle>{editingServicio ? 'Editar' : 'Nuevo'} Servicio</DialogTitle>
           </DialogHeader>
@@ -160,7 +160,7 @@ export const AdminServices: React.FC = () => {
               <Input
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                className="bg-slate-800 border-slate-700"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                 placeholder="ej: Corte Clásico"
                 required
               />
@@ -172,7 +172,7 @@ export const AdminServices: React.FC = () => {
                   type="number"
                   value={duracion}
                   onChange={(e) => setDuracion(e.target.value)}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   placeholder="30"
                   min="1"
                   required
@@ -185,7 +185,7 @@ export const AdminServices: React.FC = () => {
                   step="0.01"
                   value={precio}
                   onChange={(e) => setPrecio(e.target.value)}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   placeholder="15.00"
                   min="0"
                   required
@@ -197,7 +197,7 @@ export const AdminServices: React.FC = () => {
               <Textarea
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
-                className="bg-slate-800 border-slate-700 resize-none"
+                className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 resize-none"
                 rows={3}
                 placeholder="Descripción breve del servicio..."
               />
@@ -207,7 +207,7 @@ export const AdminServices: React.FC = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setIsDialogOpen(false)}
-                className="flex-1 border-slate-700"
+                className="flex-1 border-slate-200 dark:border-slate-700"
               >
                 Cancelar
               </Button>
