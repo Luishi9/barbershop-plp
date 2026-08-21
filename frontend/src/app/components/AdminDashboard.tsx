@@ -89,35 +89,35 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
           <TabsList className="bg-slate-800/50 border border-slate-700 p-1">
             <TabsTrigger 
               value="dashboard" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
             >
               <LayoutDashboard className="w-4 h-4 mr-2" />
               Dashboard
             </TabsTrigger>
             <TabsTrigger 
               value="appointments"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
             >
               <Calendar className="w-4 h-4 mr-2" />
               Citas
             </TabsTrigger>
             <TabsTrigger 
               value="barbers"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
             >
               <Scissors className="w-4 h-4 mr-2" />
               Barberos
             </TabsTrigger>
             <TabsTrigger 
               value="services"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
             >
               <Settings className="w-4 h-4 mr-2" />
               Servicios
             </TabsTrigger>
             <TabsTrigger 
               value="clients"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
             >
               <Users className="w-4 h-4 mr-2" />
               Clientes
@@ -149,8 +149,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-500/20 rounded-lg">
-                      <Clock className="w-5 h-5 text-amber-400" />
+                    <div className="p-2 bg-brand-soft rounded-lg">
+                      <Clock className="w-5 h-5 text-brand" />
                     </div>
                     <div>
                       <div className="text-2xl font-bold text-white">{stats.citasHoy}</div>
@@ -198,7 +198,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-amber-500" />
+                  <TrendingUp className="w-5 h-5 text-brand" />
                   Próximas Citas
                 </CardTitle>
               </CardHeader>

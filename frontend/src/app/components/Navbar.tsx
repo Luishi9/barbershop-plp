@@ -13,11 +13,11 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
     <nav className="bg-slate-900 border-b border-slate-800 px-6 py-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-brand to-brand-hover rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg">✂</span>
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Barbería Elite</h1>
+            <h1 className="text-xl font-bold text-white">Barbería PLP</h1>
             <p className="text-xs text-slate-400">
               {user.rol === 'admin' ? 'Panel de Administración' : 'Panel de Barbero'}
             </p>
@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center">
-              <UserIcon className="w-4 h-4 text-amber-500" />
+              <UserIcon className="w-4 h-4 text-brand" />
             </div>
             <div className="text-right">
               <p className="text-sm text-white font-medium">{user.nombre}</p>

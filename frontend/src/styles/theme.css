@@ -25,11 +25,11 @@
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-1: oklch(86.174% 0.17404 168.252);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(89.031% 0.1739 171.301);
+  --chart-5: oklch(88.347% 0.18541 165.158);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -39,6 +39,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Brand palette — azul profesional → indigo */
+  --brand: #2563eb;
+  --brand-hover: #4338ca;
+  --brand-foreground: #ffffff;
+  --brand-soft: rgba(37, 99, 235, 0.2);
 }
 
 .dark {
@@ -63,11 +69,11 @@
   --ring: oklch(0.439 0 0);
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+   --chart-1: oklch(86.174% 0.17404 168.252);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(89.031% 0.1739 171.301);
+  --chart-5: oklch(88.347% 0.18541 165.158);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -76,6 +82,12 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+
+  /* Brand palette dark — tonos más luminosos para buen contraste */
+  --brand: #60a5fa;
+  --brand-hover: #818cf8;
+  --brand-foreground: #ffffff;
+  --brand-soft: rgba(96, 165, 250, 0.2);
 }
 
 @theme inline {
@@ -117,6 +129,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Brand tokens — usar como bg-brand, text-brand, from-brand, to-brand, border-brand */
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
 }
 
 @layer base {

@@ -81,7 +81,7 @@ export const AdminAppointments: React.FC<AdminAppointmentsProps> = ({ onUpdate }
             <CardTitle className="text-white">Gestión de Citas</CardTitle>
             <Button
               onClick={() => setIsDialogOpen(true)}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+              className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nueva Cita

@@ -104,8 +104,8 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-500/20 rounded-lg">
-                    <CalendarIcon className="w-5 h-5 text-amber-400" />
+                    <div className="p-2 bg-brand-soft rounded-lg">
+                      <CalendarIcon className="w-5 h-5 text-brand" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-white">{stats.hoy}</div>
@@ -155,21 +155,21 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
               <TabsList className="bg-slate-800/50 border border-slate-700 p-1">
                 <TabsTrigger
                   value="today"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
                 >
                   <CalendarIcon className="w-4 h-4 mr-2" />
                   Hoy
                 </TabsTrigger>
                 <TabsTrigger
                   value="upcoming"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
                 >
                   <Clock className="w-4 h-4 mr-2" />
                   Próximas
                 </TabsTrigger>
                 <TabsTrigger
                   value="pending"
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white"
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
                 >
                   Pendientes
                 </TabsTrigger>
@@ -177,7 +177,7 @@ export const BarberDashboard: React.FC<BarberDashboardProps> = ({ user }) => {
 
               <Button
                 onClick={() => setIsDialogOpen(true)}
-                className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Nueva Cita

@@ -141,7 +141,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
               <button
                 type="button"
                 onClick={() => setIsNewClient(!isNewClient)}
-                className="text-xs text-amber-500 hover:text-amber-400"
+                className="text-xs text-brand hover:text-brand"
               >
                 {isNewClient ? 'Seleccionar existente' : '+ Nuevo cliente'}
               </button>
@@ -249,7 +249,7 @@ export const NewAppointmentDialog: React.FC<NewAppointmentDialogProps> = ({
             <Button
               type="submit"
               disabled={saving}
-              className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+              className="flex-1 bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
             >
               {saving ? 'Creando...' : 'Crear Cita'}
             </Button>

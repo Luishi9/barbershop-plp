@@ -35,7 +35,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <User className="w-4 h-4 text-amber-500" />
+              <User className="w-4 h-4 text-brand" />
               <span className="font-semibold text-white">{cita.cliente.nombre}</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-slate-400 mb-1">
@@ -71,7 +71,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
           <div className="pt-2 border-t border-slate-700">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-400">{cita.servicio.nombre}</span>
-              <span className="font-semibold text-amber-500">${cita.servicio.precio}</span>
+              <span className="font-semibold text-brand">${cita.servicio.precio}</span>
             </div>
           </div>
         </div>

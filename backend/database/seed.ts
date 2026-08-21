@@ -16,6 +16,12 @@
 import 'dotenv/config';
 import { createClient } from '@supabase/supabase-js';
 
+// Declaración mínima para ejecutar este script sin depender de @types/node.
+declare const process: {
+  env: Record<string, string | undefined>;
+  exit(code?: number): never;
+};
+
 // ---------------------------------------------------------------------------
 // Demo data (mirrors src/data/mockData.ts)
 // ---------------------------------------------------------------------------

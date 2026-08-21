@@ -49,7 +49,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       
       <Card className="w-full max-w-md relative z-10 bg-slate-900/80 backdrop-blur-sm border-slate-800">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center mb-2">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-brand to-brand-hover rounded-full flex items-center justify-center mb-2">
             <Scissors className="w-8 h-8 text-white" />
           </div>
           <CardTitle className="text-3xl text-white">Barbería Elite</CardTitle>
@@ -99,7 +99,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <Button 
               type="submit" 
               disabled={loading}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white"
+              className="w-full bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover text-white"
             >
               {loading ? 'Ingresando...' : 'Iniciar Sesión'}
             </Button>

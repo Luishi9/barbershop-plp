@@ -106,7 +106,7 @@ export const AdminBarbers: React.FC = () => {
             <CardTitle className="text-white">Gestión de Barberos</CardTitle>
             <Button
               onClick={() => handleOpenDialog()}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+              className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nuevo Barbero
@@ -120,7 +120,7 @@ export const AdminBarbers: React.FC = () => {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center">
+                        <div className="w-12 h-12 bg-gradient-to-br from-brand to-brand-hover rounded-full flex items-center justify-center">
                         <Scissors className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -150,7 +150,7 @@ export const AdminBarbers: React.FC = () => {
 
                   {barbero.especialidad && (
                     <div className="mb-3">
-                      <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                        <Badge className="bg-brand-soft text-brand border-brand/30">
                         {barbero.especialidad}
                       </Badge>
                     </div>
@@ -251,7 +251,7 @@ export const AdminBarbers: React.FC = () => {
               <Button
                 type="submit"
                 disabled={saving}
-                className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                className="flex-1 bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
               >
                 {saving ? 'Guardando...' : editingBarbero ? 'Guardar' : 'Crear'}
               </Button>

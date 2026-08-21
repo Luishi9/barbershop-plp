@@ -100,7 +100,7 @@ export const AdminClients: React.FC = () => {
             <CardTitle className="text-white">Gestión de Clientes</CardTitle>
             <Button
               onClick={() => handleOpenDialog()}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+              className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nuevo Cliente
@@ -125,7 +125,7 @@ export const AdminClients: React.FC = () => {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center">
-                        <User className="w-5 h-5 text-amber-500" />
+                        <User className="w-5 h-5 text-brand" />
                       </div>
                       <div>
                         <h3 className="font-medium text-white">{cliente.nombre}</h3>
@@ -209,7 +209,7 @@ export const AdminClients: React.FC = () => {
               <Button
                 type="submit"
                 disabled={saving}
-                className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                className="flex-1 bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
               >
                 {saving ? 'Guardando...' : editingCliente ? 'Guardar' : 'Crear'}
               </Button>

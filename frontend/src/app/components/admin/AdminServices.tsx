@@ -87,7 +87,7 @@ export const AdminServices: React.FC = () => {
             <CardTitle className="text-white">Gestión de Servicios</CardTitle>
             <Button
               onClick={() => handleOpenDialog()}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+              className="bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nuevo Servicio
@@ -101,7 +101,7 @@ export const AdminServices: React.FC = () => {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-gradient-to-br from-brand to-brand-hover rounded-lg flex items-center justify-center">
                         <Sparkles className="w-5 h-5 text-white" />
                       </div>
                       <div>
@@ -132,7 +132,7 @@ export const AdminServices: React.FC = () => {
                   <div className="pt-3 border-t border-slate-700">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-slate-500">Precio</span>
-                      <span className="text-xl font-bold text-amber-500">${servicio.precio}</span>
+                        <span className="text-xl font-bold text-brand">${servicio.precio}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -214,7 +214,7 @@ export const AdminServices: React.FC = () => {
               <Button
                 type="submit"
                 disabled={saving}
-                className="flex-1 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+                className="flex-1 bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover"
               >
                 {saving ? 'Guardando...' : editingServicio ? 'Guardar' : 'Crear'}
               </Button>
