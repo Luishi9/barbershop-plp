@@ -65,3 +65,21 @@ export interface AuthContext {
   email: string;
   profile: User;
 }
+
+/** Horario diario del negocio (0 = domingo, 6 = sábado). */
+export interface HorarioDia {
+  activo: boolean;
+  apertura: string; // HH:MM
+  cierre: string;   // HH:MM
+}
+
+/** Configuración singleton del negocio. */
+export interface Negocio {
+  id: number;
+  nombre: string;
+  logoUrl: string | null;
+  telefono: string | null;
+  direccion: string | null;
+  horarios: Record<string, HorarioDia>;
+  updatedAt: string;
+}

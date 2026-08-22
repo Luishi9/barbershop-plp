@@ -9,6 +9,8 @@ import type {
   Cliente,
   Disponibilidad,
   EstadoCita,
+  Negocio,
+  NegocioUpdate,
   Servicio,
   User,
 } from '@/types';
@@ -172,3 +174,37 @@ export const updateCita = (id: string, input: UpdateCitaInput): Promise<CitaDeta
 
 export const deleteCita = (id: string): Promise<void> =>
   apiFetch<void>(`/citas/${id}`, { method: 'DELETE' });
+
+// ---------------------------------------------------------------------------
+// Negocio (singleton config)
+// ---------------------------------------------------------------------------
+
+/** Public read (no auth) — used by the login screen. */
+export async function getNegocio(): Promise<Negocio> {
+  const res = await fetch(`${BASE}/public/negocio`);
+  const body = (await res.json().catch(() => ({}))) as ApiEnvelope<Negocio>;
+  if (!res.ok) throw new Error(body.message || 'Error de servidor');
+  return body.data;
+}
+
+export const updateNegocio = (input: NegocioUpdate): Promise<Negocio> =>
+  apiFetch<Negocio>('/negocio', { method: 'PUT', body: JSON.stringify(input) });
+
+/**
+ * Upload a logo file to Supabase Storage `logos` bucket and return its public URL.
+ * Uses the admin client (current user's anon key + storage.from) but requires the
+ * row-level security policy on storage.objects to permit admins.
+ */
+export async function uploadLogo(file: File): Promise<{ url: string }> {
+  const ext = file.name.split('.').pop()?.toLowerCase() || 'png';
+  const fileName = `logo-${Date.now()}.${ext}`;
+
+  const { error: uploadErr } = await supabase.storage
+    .from('logos')
+    .upload(fileName, file, { upsert: true, contentType: file.type });
+
+  if (uploadErr) throw new Error(`Error subiendo logo: ${uploadErr.message}`);
+
+  const { data } = supabase.storage.from('logos').getPublicUrl(fileName);
+  return { url: data.publicUrl };
+}

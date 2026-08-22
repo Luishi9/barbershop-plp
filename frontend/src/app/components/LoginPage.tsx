@@ -8,12 +8,14 @@ import { ThemeToggle } from '@/app/components/ui/theme-toggle';
 import { User } from '@/types';
 import { supabase } from '@/services/supabase';
 import { getMe } from '@/services/api';
+import { useNegocio } from '@/context/NegocioContext';
 
 interface LoginPageProps {
   onLogin: (user: User) => void;
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+  const { negocio } = useNegocio();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -53,10 +55,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
       <Card className="w-full max-w-md relative z-10 bg-slate-900/80 backdrop-blur-sm border-slate-800">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-brand to-brand-hover rounded-full flex items-center justify-center mb-2">
-            <Scissors className="w-8 h-8 text-white" />
-          </div>
-          <CardTitle className="text-3xl text-white">Barbería Elite</CardTitle>
+          {negocio?.logoUrl ? (
+            <img
+              src={negocio.logoUrl}
+              alt={negocio.nombre}
+              className="mx-auto w-16 h-16 rounded-full object-cover mb-2"
+            />
+          ) : (
+            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-brand to-brand-hover rounded-full flex items-center justify-center mb-2">
+              <Scissors className="w-8 h-8 text-white" />
+            </div>
+          )}
+          <CardTitle className="text-3xl text-white">{negocio?.nombre ?? 'Barbería'}</CardTitle>
           <CardDescription className="text-slate-400">
             Sistema de Gestión de Citas
           </CardDescription>

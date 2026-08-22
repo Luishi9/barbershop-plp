@@ -53,3 +53,27 @@ export interface CitaDetallada extends Cita {
   barbero: Barbero;
   servicio: Servicio;
 }
+
+export interface HorarioDia {
+  activo: boolean;
+  apertura: string; // HH:MM
+  cierre: string;   // HH:MM
+}
+
+export interface Negocio {
+  id: number;
+  nombre: string;
+  logoUrl: string | null;
+  telefono: string | null;
+  direccion: string | null;
+  horarios: Record<string, HorarioDia>; // keys: "0".."6"
+  updatedAt: string;
+}
+
+export type NegocioUpdate = {
+  nombre?: string;
+  logoUrl?: string | null;
+  telefono?: string | null;
+  direccion?: string | null;
+  horarios?: Record<string, HorarioDia>;
+};
