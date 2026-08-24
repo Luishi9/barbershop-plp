@@ -252,3 +252,50 @@ Sin console.logs innecesarios
 ## Filosofía del Proyecto
 
 Código limpio, predecible y escalable siempre es mejor que soluciones rápidas y desordenadas.
+
+## Flujos de Trabajo del Sistema
+
+### Flujo 1 — Autenticación
+1. Usuario abre la app → `App.tsx` consulta `supabase.auth.getSession()`.
+2. Si hay sesión válida → llama `getMe()` → carga perfil desde backend → renderiza `Navbar` + dashboard correspondiente.
+3. Si no hay sesión → renderiza `LoginPage`.
+4. Login exitoso → `supabase.auth.signInWithPassword()` → `onAuthStateChange` dispara → carga perfil → renderiza dashboard.
+5. Logout → `supabase.auth.signOut()` → estado limpio → vuelve a `LoginPage`.
+
+### Flujo 2 — Gestión de Citas
+1. Admin/Barbero crea cita desde `NewAppointmentDialog` (puede crear cliente nuevo en el momento).
+2. Frontend envía `POST /api/citas` con `clienteId`, `barberoId`, `servicioId`, `fecha`, `hora`, `notas`.
+3. Backend valida con zod → verifica referencias (cliente/barbero/servicio existen) → chequea conflictos de horario → persiste.
+4. Frontend recarga lista → toast de éxito o error.
+5. Cambio de estado (`PUT /api/citas/:id`) sigue el mismo flujo.
+
+### Flujo 3 — Configuración del Negocio
+1. Admin hace click en ⚙ Configuración (Navbar) → abre `SettingsDialog` con 3 tabs.
+2. Tab General: edita nombre y sube logo (Supabase Storage bucket `logos`).
+3. Tab Contacto: edita teléfono y dirección.
+4. Tab Horarios: toggle por día con horarios apertura/cierre.
+5. Al guardar, se persiste via `PUT /api/negocio` (admin only).
+6. `NegocioContext` recarga y los cambios se reflejan en Navbar y LoginPage.
+
+### Flujo 4 — Notificación WhatsApp (wa.me)
+1. Admin hace click en "📱 Notificar" en una `AppointmentCard` o tras crear/confirmar/cancelar cita.
+2. Abre `WhatsAppPreviewDialog` con:
+   - Datos del cliente (nombre + teléfono formateado).
+   - Textarea editable con plantilla según estado de la cita.
+   - Vista previa estilo burbuja WhatsApp.
+3. Admin edita el mensaje opcionalmente y hace click en "📤 Abrir WhatsApp".
+4. Frontend abre `https://wa.me/{phone}?text={encoded}` en nueva pestaña.
+5. WhatsApp Web/App abre con el mensaje pre-llenado → admin envía manualmente.
+6. Flujo semi-automático: 0 costo, sin backend, ~5 segundos por mensaje.
+
+### Flujo 5 — Tema Claro/Oscuro
+1. Usuario hace click en el botón Sol/Luna en la Navbar.
+2. `useTheme` hook alterna el estado y aplica/quita la clase `.dark` en `<html>`.
+3. La clase activa el bloque `.dark { ... }` del `theme.css` (tokens semánticos).
+4. Preferencia se persiste en `localStorage` (clave `barbershop-theme`).
+5. Todos los componentes que usan tokens semánticos (`bg-surface`, `text-text-primary`, etc.) responden automáticamente.
+
+### Flujo 6 — Búsqueda y Filtros de Citas
+1. Usuario escribe en el campo búsqueda de `AdminAppointments` o selecciona estado en el select.
+2. Filtros se aplican en cliente sobre la lista cargada (no se vuelve a llamar al backend).
+3. Orden por fecha/hora descendente para ver las más recientes primero.
