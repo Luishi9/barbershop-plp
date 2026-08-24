@@ -1,10 +1,12 @@
 /**
  * WhatsAppPreviewDialog — shows a preview of the message that will be sent via
- * wa.me, lets the admin edit it, and opens WhatsApp in a new tab with the
- * message pre-filled. No backend, no API cost.
+ * wa.me. Lets the admin pick a template (pre-selected by cita state), edit the
+ * message, and open WhatsApp in a new tab with it pre-filled.
+ * No backend, no API cost.
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MessageCircle, Send, ExternalLink, Phone, User as UserIcon } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -16,8 +18,22 @@ import {
 import { Button } from '@/app/components/ui/button';
 import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/components/ui/select';
 import { useNegocio } from '@/context/NegocioContext';
-import { formatPhoneForWhatsApp, getMessageTemplate, openWhatsApp } from '@/utils/whatsapp';
+import {
+  MESSAGE_KINDS,
+  defaultKindForCita,
+  formatPhoneForWhatsApp,
+  getMessageTemplate,
+  openWhatsApp,
+} from '@/utils/whatsapp';
+import type { MessageKind } from '@/utils/whatsapp';
 import type { CitaDetallada } from '@/types';
 
 interface WhatsAppPreviewDialogProps {
@@ -32,33 +48,43 @@ export const WhatsAppPreviewDialog: React.FC<WhatsAppPreviewDialogProps> = ({
   onOpenChange,
 }) => {
   const { negocio } = useNegocio();
+  const [kind, setKind] = useState<MessageKind>('agendada');
   const [message, setMessage] = useState('');
 
-  const defaultTemplate = useMemo(() => {
-    if (!cita) return '';
-    // Pick "agendada" as default when dialog opens (covers post-create flow).
-    return getMessageTemplate(cita, 'agendada', negocio);
-  }, [cita, negocio]);
-
+  // Re-initialize every time the dialog opens: template pre-selected by the
+  // current estado of the cita.
   useEffect(() => {
     if (open && cita) {
-      setMessage(getMessageTemplate(cita, 'agendada', negocio));
+      const initial = defaultKindForCita(cita);
+      setKind(initial);
+      setMessage(getMessageTemplate(cita, initial, negocio));
     }
-  }, [open, cita, negocio]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, cita]);
 
   if (!cita) return null;
 
   const telefono = cita.cliente?.telefono ?? '';
-  const cleaned = formatPhoneForWhatsApp(telefono);
+  const cleaned = formatPhoneForWhatsApp(telefono, negocio?.codigoPais);
   const hasPhone = cleaned.length >= 7;
   const charCount = message.length;
 
+  /** Switch template — regenerates the message body (discards manual edits). */
+  const handleKindChange = (next: MessageKind) => {
+    setKind(next);
+    setMessage(getMessageTemplate(cita, next, negocio));
+  };
+
   const handleSend = () => {
     if (!hasPhone) return;
-    const opened = openWhatsApp(telefono, message);
+    toast.success('Abriendo WhatsApp…');
+    const opened = openWhatsApp(telefono, message, negocio?.codigoPais);
     if (!opened) {
       // Popup blocked — fallback to copying the link.
-      window.prompt('Copia este enlace para abrir WhatsApp:', `https://wa.me/${cleaned}?text=${encodeURIComponent(message)}`);
+      window.prompt(
+        'Tu navegador bloqueó la ventana emergente. Copia este enlace para abrir WhatsApp:',
+        `https://wa.me/${cleaned}?text=${encodeURIComponent(message)}`,
+      );
     }
     onOpenChange(false);
   };
@@ -72,7 +98,7 @@ export const WhatsAppPreviewDialog: React.FC<WhatsAppPreviewDialogProps> = ({
             Notificar por WhatsApp
           </DialogTitle>
           <DialogDescription>
-            Revisa el mensaje, editalo si quieres y abre WhatsApp para enviarlo.
+            Elige una plantilla, edita el mensaje y abre WhatsApp para enviarlo.
           </DialogDescription>
         </DialogHeader>
 
@@ -92,6 +118,23 @@ export const WhatsAppPreviewDialog: React.FC<WhatsAppPreviewDialogProps> = ({
             </div>
           </div>
 
+          {/* Template selector */}
+          <div className="space-y-2">
+            <Label>Plantilla</Label>
+            <Select value={kind} onValueChange={(v) => handleKindChange(v as MessageKind)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Elegir plantilla" />
+              </SelectTrigger>
+              <SelectContent>
+                {MESSAGE_KINDS.map(({ value, label }) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Editable message */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -109,9 +152,9 @@ export const WhatsAppPreviewDialog: React.FC<WhatsAppPreviewDialogProps> = ({
           {/* Preview bubble */}
           <div className="space-y-2">
             <Label>Vista previa</Label>
-            <div className="rounded-lg bg-[#efeae2] dark:bg-[#0b141a] p-4 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><circle cx=%2225%22 cy=%2225%22 r=%221%22 fill=%22%23ffffff%22 opacity=%220.05%22/></svg>')]">
+            <div className="rounded-lg bg-[#efeae2] dark:bg-[#0b141a] p-4">
               <div className="flex justify-end">
-                <div className="max-w-[85%] rounded-lg bg-[#d9fdd3] dark:bg-[#005c4b] text-slate-900 dark:text-white px-3 py-2 shadow-sm relative">
+                <div className="max-w-[85%] rounded-lg bg-[#d9fdd3] dark:bg-[#005c4b] text-slate-900 dark:text-white px-3 py-2 shadow-sm">
                   <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed m-0">
                     {message || '(vacío)'}
                   </pre>
@@ -150,7 +193,8 @@ export const WhatsAppPreviewDialog: React.FC<WhatsAppPreviewDialogProps> = ({
 
         {!hasPhone && (
           <p className="text-xs text-red-500 mt-2">
-            El cliente no tiene un teléfono válido para enviar el mensaje.
+            El cliente no tiene un teléfono válido. Verifica que incluya código de país o
+            configura uno en ⚙ Configuración → Contacto.
           </p>
         )}
       </DialogContent>

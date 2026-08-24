@@ -80,6 +80,8 @@ export interface Negocio {
   logoUrl: string | null;
   telefono: string | null;
   direccion: string | null;
+  /** Código de país para normalizar teléfonos en WhatsApp (ej. '52'). */
+  codigoPais?: string | null;
   horarios: Record<string, HorarioDia>;
   updatedAt: string;
 }

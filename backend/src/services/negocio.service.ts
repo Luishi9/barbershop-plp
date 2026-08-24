@@ -26,6 +26,11 @@ export const negocioUpdateSchema = z.object({
   logoUrl: z.string().url().nullable().optional(),
   telefono: z.string().max(50).nullable().optional(),
   direccion: z.string().max(200).nullable().optional(),
+  codigoPais: z
+    .string()
+    .regex(/^\d{1,4}$/, 'Solo dígitos, entre 1 y 4')
+    .nullable()
+    .optional(),
   horarios: horariosSchema.optional(),
 });
 

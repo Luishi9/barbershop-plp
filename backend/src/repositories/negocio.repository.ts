@@ -11,6 +11,7 @@ type NegocioRow = {
   logo_url: string | null;
   telefono: string | null;
   direccion: string | null;
+  codigo_pais?: string | null;
   horarios: Record<string, HorarioDia>;
   updated_at: string;
 };
@@ -21,6 +22,7 @@ const toDomain = (row: NegocioRow): Negocio => ({
   logoUrl: row.logo_url,
   telefono: row.telefono,
   direccion: row.direccion,
+  codigoPais: row.codigo_pais ?? null,
   horarios: row.horarios,
   updatedAt: row.updated_at,
 });
@@ -44,6 +46,7 @@ export class NegocioRepository {
     logoUrl?: string | null;
     telefono?: string | null;
     direccion?: string | null;
+    codigoPais?: string | null;
     horarios?: Record<string, HorarioDia>;
   }): Promise<Negocio | null> {
     const update: Record<string, unknown> = { updated_at: new Date().toISOString() };
@@ -51,6 +54,7 @@ export class NegocioRepository {
     if (payload.logoUrl !== undefined) update.logo_url = payload.logoUrl;
     if (payload.telefono !== undefined) update.telefono = payload.telefono;
     if (payload.direccion !== undefined) update.direccion = payload.direccion;
+    if (payload.codigoPais !== undefined) update.codigo_pais = payload.codigoPais;
     if (payload.horarios !== undefined) update.horarios = payload.horarios;
 
     const { data, error } = await this.db

@@ -280,11 +280,11 @@ Código limpio, predecible y escalable siempre es mejor que soluciones rápidas 
 ### Flujo 4 — Notificación WhatsApp (wa.me)
 1. Admin hace click en "📱 Notificar" en una `AppointmentCard` o tras crear/confirmar/cancelar cita.
 2. Abre `WhatsAppPreviewDialog` con:
-   - Datos del cliente (nombre + teléfono formateado).
-   - Textarea editable con plantilla según estado de la cita.
-   - Vista previa estilo burbuja WhatsApp.
-3. Admin edita el mensaje opcionalmente y hace click en "📤 Abrir WhatsApp".
-4. Frontend abre `https://wa.me/{phone}?text={encoded}` en nueva pestaña.
+   - Datos del cliente (nombre + teléfono normalizado).
+   - Plantilla pre-seleccionada según estado de la cita (`defaultKindForCita`) y selector para cambiarla.
+   - Textarea editable + vista previa estilo burbuja WhatsApp.
+3. Si el teléfono es local (≤10 dígitos), se antepone el `codigoPais` configurado en ⚙ Configuración → Contacto.
+4. Al enviar, toast "Abriendo WhatsApp…" y se abre `https://wa.me/{phone}?text={encoded}` en nueva pestaña (fallback: copiar enlace si el navegador bloquea popups).
 5. WhatsApp Web/App abre con el mensaje pre-llenado → admin envía manualmente.
 6. Flujo semi-automático: 0 costo, sin backend, ~5 segundos por mensaje.
 

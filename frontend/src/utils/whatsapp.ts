@@ -7,20 +7,32 @@ import type { CitaDetallada } from '@/types';
 import type { Negocio } from '@/types';
 
 /** Strip everything except digits from a phone string. */
-export function formatPhoneForWhatsApp(telefono: string): string {
-  return telefono.replace(/\D/g, '');
+export function formatPhoneForWhatsApp(telefono: string, codigoPais?: string | null): string {
+  const digits = telefono.replace(/\D/g, '');
+  if (!digits) return '';
+  const cc = (codigoPais || '').replace(/\D/g, '');
+  // Prepend the country code only when missing and the number looks local
+  // (10 digits or fewer). Numbers already longer are assumed international.
+  if (cc && !digits.startsWith(cc) && digits.length <= 10) {
+    return cc + digits;
+  }
+  return digits;
 }
 
 /** Build a wa.me URL for the given phone + message. */
-export function buildWaMeLink(phone: string, message: string): string {
-  const cleaned = formatPhoneForWhatsApp(phone);
+export function buildWaMeLink(phone: string, message: string, codigoPais?: string | null): string {
+  const cleaned = formatPhoneForWhatsApp(phone, codigoPais);
   const encoded = encodeURIComponent(message);
   return `https://wa.me/${cleaned}?text=${encoded}`;
 }
 
 /** Open a wa.me link in a new tab. Returns true if popup opened. */
-export function openWhatsApp(phone: string, message: string): boolean {
-  const url = buildWaMeLink(phone, message);
+export function openWhatsApp(
+  phone: string,
+  message: string,
+  codigoPais?: string | null,
+): boolean {
+  const url = buildWaMeLink(phone, message, codigoPais);
   const win = window.open(url, '_blank', 'noopener,noreferrer');
   return win !== null;
 }
@@ -36,6 +48,16 @@ function formatFecha(date: string): string {
 }
 
 type MessageKind = 'agendada' | 'confirmada' | 'cancelada' | 'recordatorio';
+
+export type { MessageKind };
+
+/** Options for the template selector in the WhatsApp preview dialog. */
+export const MESSAGE_KINDS: { value: MessageKind; label: string }[] = [
+  { value: 'agendada', label: '📅 Cita agendada' },
+  { value: 'confirmada', label: '✅ Confirmación' },
+  { value: 'cancelada', label: '❌ Cancelación' },
+  { value: 'recordatorio', label: '🔔 Recordatorio' },
+];
 
 const SALUDO = (nombre: string) => `¡Hola ${nombre.split(' ')[0]}! 👋`;
 

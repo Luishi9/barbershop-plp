@@ -66,6 +66,8 @@ export interface Negocio {
   logoUrl: string | null;
   telefono: string | null;
   direccion: string | null;
+  /** Código de país para normalizar teléfonos en WhatsApp (ej. '52'). */
+  codigoPais?: string | null;
   horarios: Record<string, HorarioDia>; // keys: "0".."6"
   updatedAt: string;
 }
@@ -75,5 +77,6 @@ export type NegocioUpdate = {
   logoUrl?: string | null;
   telefono?: string | null;
   direccion?: string | null;
+  codigoPais?: string | null;
   horarios?: Record<string, HorarioDia>;
 };

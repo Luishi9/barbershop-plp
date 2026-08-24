@@ -40,6 +40,7 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [telefono, setTelefono] = useState('');
   const [direccion, setDireccion] = useState('');
+  const [codigoPais, setCodigoPais] = useState('');
   const [horarios, setHorarios] = useState<Record<string, { activo: boolean; apertura: string; cierre: string }>>({});
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
     setLogoUrl(negocio.logoUrl);
     setTelefono(negocio.telefono || '');
     setDireccion(negocio.direccion || '');
+    setCodigoPais(negocio.codigoPais || '');
     setHorarios(negocio.horarios);
   }, [negocio]);
 
@@ -66,7 +68,11 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
   const handleSaveContacto = async () => {
     setSaving(true);
     try {
-      await save({ telefono: telefono || null, direccion: direccion || null });
+      await save({
+        telefono: telefono || null,
+        direccion: direccion || null,
+        codigoPais: codigoPais || null,
+      });
       toast.success('Datos de contacto guardados');
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'No se pudo guardar');
@@ -209,6 +215,19 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
                 placeholder="Av. Principal 123, Ciudad"
                 maxLength={200}
               />
+            </div>
+            <div className="space-y-2">
+              <Label>Código de país (WhatsApp)</Label>
+              <Input
+                value={codigoPais}
+                onChange={(e) => setCodigoPais(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                placeholder="52"
+                inputMode="numeric"
+              />
+              <p className="text-xs text-slate-500">
+                Se antepone automáticamente a teléfonos locales de 10 dígitos o menos
+                cuando el cliente no tiene código de país. Ej.: 52 (México), 34 (España), 57 (Colombia).
+              </p>
             </div>
             <div className="flex justify-end pt-2">
               <Button onClick={handleSaveContacto} disabled={saving} className="bg-gradient-to-r from-brand to-brand-hover">
