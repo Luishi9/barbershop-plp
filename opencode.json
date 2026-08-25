@@ -2,7 +2,10 @@
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
     "AGENTS.md",
-    "PROJECT_INDEX.md"
+    ".opencode/context/PROJECT_INDEX.md",
+    ".opencode/context/Guidelines.md",
+    ".opencode/context/NuevaArquitectura.md",
+    ".opencode/context/NuevosRequerimientos.md"
   ],
   "tool_output": {
     "max_bytes": 10240

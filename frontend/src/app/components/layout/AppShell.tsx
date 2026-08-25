@@ -17,7 +17,8 @@ import {
 import type { ModuloKey, User } from '@/types';
 import { useRoles } from '@/hooks/useRoles';
 import { Navbar } from '@/app/components/Navbar';
-import { SettingsDialog } from '@/app/components/ui/settings-dialog';
+// import { SettingsDialog } from '@/app/components/ui/settings-dialog';
+import { AdminSettings } from '@/app/components/admin/AdminSettings';
 import { AdminDashboard } from '@/app/components/AdminDashboard';
 import { BarberDashboard } from '@/app/components/BarberDashboard';
 import { BarberCitas } from '@/app/components/BarberCitas';
@@ -25,6 +26,8 @@ import { AdminAppointments } from '@/app/components/admin/AdminAppointments';
 import { AdminBarbers } from '@/app/components/admin/AdminBarbers';
 import { AdminServices } from '@/app/components/admin/AdminServices';
 import { AdminClients } from '@/app/components/admin/AdminClients';
+
+type Section = ModuloKey | 'configuracion';
 
 interface NavItem {
   key: ModuloKey;
@@ -47,14 +50,15 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ user, onLogout }) => {
   const isAdmin = user.rol === 'admin';
-  const { modulosByRol, refresh: refreshRoles } = useRoles();
+  const { modulosByRol } = useRoles();
   const allowed = modulosByRol[user.rol] ?? [];
 
-  const [section, setSection] = useState<ModuloKey>('dashboard');
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [section, setSection] = useState<Section>('dashboard');
+  //const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Guard: if the active section loses permission, jump to the first allowed one.
   useEffect(() => {
+    if (section === 'configuracion') return;
     if (!allowed.includes(section) && allowed.length > 0) {
       setSection(allowed[0]);
     }
@@ -62,11 +66,13 @@ export const AppShell: React.FC<AppShellProps> = ({ user, onLogout }) => {
 
   const items = NAV_ITEMS.filter((item) => allowed.includes(item.key));
   const activeLabel =
-    NAV_ITEMS.find((i) => i.key === section)?.label ?? 'Dashboard';
+    section === 'configuracion'
+      ? 'Configuración'
+      : NAV_ITEMS.find((i) => i.key === section)?.label ?? 'Dashboard';
 
   const handleNav = (key: string) => {
     if (key === 'configuracion') {
-      if (isAdmin) setSettingsOpen(true);
+      if (isAdmin) setSection('configuracion');
       return;
     }
     if (key === 'salir') {
@@ -86,6 +92,8 @@ export const AppShell: React.FC<AppShellProps> = ({ user, onLogout }) => {
         return <AdminServices />;
       case 'clientes':
         return <AdminClients />;
+      case 'configuracion':
+        return <AdminSettings />;
       default:
         return isAdmin ? <AdminDashboard user={user} /> : <BarberDashboard user={user} />;
     }
@@ -128,7 +136,7 @@ export const AppShell: React.FC<AppShellProps> = ({ user, onLogout }) => {
             <button
               onClick={() => handleNav('configuracion')}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                settingsOpen
+                section === 'configuracion'
                   ? 'bg-gradient-to-r from-brand to-brand-hover text-white shadow'
                   : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
               }`}
@@ -210,14 +218,6 @@ export const AppShell: React.FC<AppShellProps> = ({ user, onLogout }) => {
           </button>
         </div>
       </nav>
-
-      <SettingsDialog
-        canEdit={isAdmin}
-        open={settingsOpen}
-        onOpenChange={setSettingsOpen}
-        roles={modulosByRol}
-        onRolesSaved={refreshRoles}
-      />
     </div>
   );
 };
