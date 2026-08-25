@@ -299,3 +299,12 @@ Código limpio, predecible y escalable siempre es mejor que soluciones rápidas 
 1. Usuario escribe en el campo búsqueda de `AdminAppointments` o selecciona estado en el select.
 2. Filtros se aplican en cliente sobre la lista cargada (no se vuelve a llamar al backend).
 3. Orden por fecha/hora descendente para ver las más recientes primero.
+
+### Flujo 7 — Navegación Responsiva y Permisos por Rol (App Shell)
+1. Tras login, `AppShell` carga la matriz `rol → módulos` vía `useRoles()` (GET /api/roles, con defaults hardcodeados como fallback).
+2. **Escritorio (≥lg)**: sidebar fija a la izquierda con los módulos permitidos + Configuración (admin) + Salir abajo; el contenido se renderiza en `<main>` según la sección activa.
+3. **Móvil (<lg)**: navbar superior slim (logo, tema, usuario) + bottom-nav fija con íconos de las mismas secciones + Salir; safe-area iOS respetada.
+4. Al cambiar de sección el componente se remonta → datos siempre frescos.
+5. Admin edita permisos en ⚙ Configuración → tab Roles (checkboxes por módulo, PUT /api/roles/:rol).
+6. Guard: si la sección activa pierde permiso, AppShell salta al primer módulo permitido del rol.
+7. Alcance del control: filtrado a nivel UI; las escrituras del backend siguen protegidas por requireAdmin.

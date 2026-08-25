@@ -9,8 +9,10 @@ import type {
   Cliente,
   Disponibilidad,
   EstadoCita,
+  ModuloKey,
   Negocio,
   NegocioUpdate,
+  RolePermission,
   Servicio,
   User,
 } from '@/types';
@@ -189,6 +191,21 @@ export async function getNegocio(): Promise<Negocio> {
 
 export const updateNegocio = (input: NegocioUpdate): Promise<Negocio> =>
   apiFetch<Negocio>('/negocio', { method: 'PUT', body: JSON.stringify(input) });
+
+// ---------------------------------------------------------------------------
+// Roles y permisos
+// ---------------------------------------------------------------------------
+
+export const getRoles = (): Promise<RolePermission[]> => apiFetch<RolePermission[]>('/roles');
+
+export const updateRolePermissions = (
+  rol: string,
+  modulos: ModuloKey[],
+): Promise<RolePermission> =>
+  apiFetch<RolePermission>(`/roles/${rol}`, {
+    method: 'PUT',
+    body: JSON.stringify({ modulos }),
+  });
 
 /**
  * Upload a logo file to Supabase Storage `logos` bucket and return its public URL.

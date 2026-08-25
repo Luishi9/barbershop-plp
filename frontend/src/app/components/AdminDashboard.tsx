@@ -1,31 +1,25 @@
+/**
+ * Admin overview section — KPI cards + upcoming appointments.
+ * Navigation between sections lives in AppShell (sidebar / bottom-nav).
+ */
 import React, { useState, useEffect } from 'react';
 import {
-  LayoutDashboard,
   Calendar,
   Users,
-  Scissors,
-  Settings,
   TrendingUp,
   DollarSign,
   Clock,
-  CheckCircle,
 } from 'lucide-react';
 import { User, CitaDetallada, EstadoCita } from '@/types';
 import { getCitas, getClientes, getServicios, updateCita } from '@/services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { AppointmentCard } from '@/app/components/AppointmentCard';
-import { AdminAppointments } from '@/app/components/admin/AdminAppointments';
-import { AdminBarbers } from '@/app/components/admin/AdminBarbers';
-import { AdminServices } from '@/app/components/admin/AdminServices';
-import { AdminClients } from '@/app/components/admin/AdminClients';
 
 interface AdminDashboardProps {
   user: User;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
-  const [activeTab, setActiveTab] = useState('dashboard');
   const [citas, setCitas] = useState<CitaDetallada[]>([]);
   const [stats, setStats] = useState({
     totalCitas: 0,
@@ -36,6 +30,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadData = async () => {
@@ -83,163 +78,103 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
     .slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="max-w-7xl mx-auto p-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-500 p-1">
-            <TabsTrigger 
-              value="dashboard" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
-            >
-              <LayoutDashboard className="w-4 h-4 mr-2" />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger 
-              value="appointments"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Citas
-            </TabsTrigger>
-            <TabsTrigger 
-              value="barbers"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
-            >
-              <Scissors className="w-4 h-4 mr-2" />
-              Barberos
-            </TabsTrigger>
-            <TabsTrigger 
-              value="services"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
-            >
-              <Settings className="w-4 h-4 mr-2" />
-              Servicios
-            </TabsTrigger>
-            <TabsTrigger 
-              value="clients"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-brand data-[state=active]:to-brand-hover data-[state=active]:text-white"
-            >
-              <Users className="w-4 h-4 mr-2" />
-              Clientes
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="dashboard" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Citas</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-500/20 rounded-lg">
-                      <Calendar className="w-5 h-5 text-blue-400" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.totalCitas}</div>
-                      <p className="text-xs text-slate-500 dark:text-slate-500">Todas las citas</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Citas Hoy</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-brand-soft rounded-lg">
-                      <Clock className="w-5 h-5 text-brand" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.citasHoy}</div>
-                      <p className="text-xs text-slate-500 dark:text-slate-500">Programadas</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Ingresos</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-500/20 rounded-lg">
-                      <DollarSign className="w-5 h-5 text-green-400" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-slate-900 dark:text-white">${stats.ingresos}</div>
-                      <p className="text-xs text-slate-500 dark:text-slate-500">Completadas</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Clientes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
-                      <Users className="w-5 h-5 text-purple-400" />
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.clientes}</div>
-                      <p className="text-xs text-slate-500 dark:text-slate-500">Registrados</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+    <div className="space-y-4 md:space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
+        <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Citas</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-500/20 rounded-lg">
+                <Calendar className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.totalCitas}</div>
+                <p className="text-xs text-slate-500">Todas las citas</p>
+              </div>
             </div>
+          </CardContent>
+        </Card>
 
-            <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
-              <CardHeader>
-                <CardTitle className="text-slate-900 dark:text-white flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-brand" />
-                  Próximas Citas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {citasProximas.length > 0 ? (
-                    citasProximas.map((cita) => (
-                      <AppointmentCard
-                        key={cita.id}
-                        cita={cita}
-                        showBarber={true}
-                        onStatusChange={handleStatusChange}
-                      />
-                    ))
-                  ) : (
-                    <div className="text-center py-8 text-slate-500 dark:text-slate-500">
-                      No hay citas próximas
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+        <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Citas Hoy</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-brand-soft rounded-lg">
+                <Clock className="w-5 h-5 text-brand" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.citasHoy}</div>
+                <p className="text-xs text-slate-500">Programadas</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="appointments">
-            <AdminAppointments onUpdate={loadData} />
-          </TabsContent>
+        <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Ingresos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-500/20 rounded-lg">
+                <DollarSign className="w-5 h-5 text-green-500 dark:text-green-400" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-white">${stats.ingresos}</div>
+                <p className="text-xs text-slate-500">Completadas</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="barbers">
-            <AdminBarbers />
-          </TabsContent>
-
-          <TabsContent value="services">
-            <AdminServices />
-          </TabsContent>
-
-          <TabsContent value="clients">
-            <AdminClients />
-          </TabsContent>
-        </Tabs>
+        <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400">Clientes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-500/20 rounded-lg">
+                <Users className="w-5 h-5 text-purple-500 dark:text-purple-400" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-white">{stats.clientes}</div>
+                <p className="text-xs text-slate-500">Registrados</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card className="bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-slate-900 dark:text-white flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-brand" />
+            Próximas Citas
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {citasProximas.length > 0 ? (
+              citasProximas.map((cita) => (
+                <AppointmentCard
+                  key={cita.id}
+                  cita={cita}
+                  showBarber={true}
+                  onStatusChange={handleStatusChange}
+                />
+              ))
+            ) : (
+              <div className="text-center py-8 text-slate-500">
+                No hay citas próximas
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

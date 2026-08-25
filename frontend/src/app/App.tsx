@@ -3,9 +3,7 @@ import { User } from '@/types';
 import { supabase } from '@/services/supabase';
 import { getMe } from '@/services/api';
 import { LoginPage } from '@/app/components/LoginPage';
-import { Navbar } from '@/app/components/Navbar';
-import { AdminDashboard } from '@/app/components/AdminDashboard';
-import { BarberDashboard } from '@/app/components/BarberDashboard';
+import { AppShell } from '@/app/components/layout/AppShell';
 import { Toaster } from '@/app/components/ui/sonner';
 
 export default function App() {
@@ -61,10 +59,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Navbar user={user} onLogout={handleLogout} />
-      {user.rol === 'admin' ? <AdminDashboard user={user} /> : <BarberDashboard user={user} />}
+    <>
+      <AppShell user={user} onLogout={handleLogout} />
       <Toaster />
-    </div>
+    </>
   );
 }

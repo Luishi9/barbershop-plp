@@ -1,9 +1,9 @@
 /**
- * Settings dialog: allows admins to edit the singleton business config.
- * Tabs: General (nombre + logo) | Contacto (teléfono + dirección) | Horario.
+ * Settings dialog — controlled by AppShell (open/onOpenChange).
+ * Tabs: General (nombre + logo) | Contacto | Horarios | Roles (permisos por módulo).
  */
 import React, { useEffect, useState } from 'react';
-import { Settings as SettingsIcon, Building2, Phone, Clock, ImageIcon } from 'lucide-react';
+import { Building2, Phone, Clock, ImageIcon, ShieldCheck, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -11,14 +11,15 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/app/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { useNegocio } from '@/context/NegocioContext';
-import { uploadLogo } from '@/services/api';
+import { uploadLogo, updateRolePermissions } from '@/services/api';
+import { MODULO_KEYS, MODULO_LABELS } from '@/types';
+import type { ModuloKey } from '@/types';
 
 const DIAS = [
   { key: '1', label: 'Lunes' },
@@ -30,11 +31,32 @@ const DIAS = [
   { key: '0', label: 'Domingo' },
 ] as const;
 
-export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
+const ROLES_EDITABLES = [
+  { rol: 'admin', label: 'Administrador', hint: 'Acceso total recomendado' },
+  { rol: 'barbero', label: 'Barbero', hint: 'Módulos visibles para barberos' },
+] as const;
+
+type RolesDraft = Record<string, ModuloKey[]>;
+
+interface SettingsDialogProps {
+  canEdit: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  roles: Record<string, ModuloKey[]>;
+  onRolesSaved: () => void;
+}
+
+export const SettingsDialog: React.FC<SettingsDialogProps> = ({
+  canEdit,
+  open,
+  onOpenChange,
+  roles,
+  onRolesSaved,
+}) => {
   const { negocio, save } = useNegocio();
-  const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [savingRole, setSavingRole] = useState<string | null>(null);
 
   const [nombre, setNombre] = useState('');
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
@@ -42,16 +64,27 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
   const [direccion, setDireccion] = useState('');
   const [codigoPais, setCodigoPais] = useState('');
   const [horarios, setHorarios] = useState<Record<string, { activo: boolean; apertura: string; cierre: string }>>({});
+  const [rolesDraft, setRolesDraft] = useState<RolesDraft>({ admin: [], barbero: [] });
 
+  // Sync local form state each time the dialog opens.
   useEffect(() => {
-    if (!negocio) return;
-    setNombre(negocio.nombre);
-    setLogoUrl(negocio.logoUrl);
-    setTelefono(negocio.telefono || '');
-    setDireccion(negocio.direccion || '');
-    setCodigoPais(negocio.codigoPais || '');
-    setHorarios(negocio.horarios);
-  }, [negocio]);
+    if (!open) return;
+    if (negocio) {
+      setNombre(negocio.nombre);
+      setLogoUrl(negocio.logoUrl);
+      setTelefono(negocio.telefono || '');
+      setDireccion(negocio.direccion || '');
+      setCodigoPais(negocio.codigoPais || '');
+      setHorarios(negocio.horarios);
+    }
+    setRolesDraft({
+      admin: [...(roles.admin ?? [])],
+      barbero: [...(roles.barbero ?? [])],
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  if (!canEdit) return null;
 
   const handleSaveGeneral = async () => {
     setSaving(true);
@@ -108,49 +141,66 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
     }
   };
 
-  const updateHorario = (key: string, field: 'activo' | 'apertura' | 'cierre', value: boolean | string) => {
+  const updateHorario = (
+    key: string,
+    field: 'activo' | 'apertura' | 'cierre',
+    value: boolean | string,
+  ) => {
     setHorarios((prev) => ({
       ...prev,
       [key]: { ...prev[key], [field]: value },
     }));
   };
 
-  if (!canEdit) return null;
+  const toggleModulo = (rol: string, modulo: ModuloKey) => {
+    setRolesDraft((prev) => ({
+      ...prev,
+      [rol]: prev[rol].includes(modulo)
+        ? prev[rol].filter((m) => m !== modulo)
+        : [...prev[rol], modulo],
+    }));
+  };
+
+  const handleSaveRole = async (rol: string) => {
+    setSavingRole(rol);
+    try {
+      await updateRolePermissions(rol, rolesDraft[rol]);
+      toast.success(`Permisos de ${rol} actualizados`);
+      onRolesSaved();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'No se pudieron guardar los permisos');
+    } finally {
+      setSavingRole(null);
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label="Configuración"
-          title="Configuración"
-          className="border-slate-700 bg-slate-800/30 text-slate-300 hover:bg-slate-800 hover:text-white"
-        >
-          <SettingsIcon className="w-4 h-4" />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Configuración del Negocio</DialogTitle>
           <DialogDescription>
-            Personaliza el nombre, logo, datos de contacto y horarios de la barbería.
+            Personaliza el nombre, logo, contacto, horarios y permisos por rol.
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="general" className="w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="general" className="flex-1">
-              <Building2 className="w-4 h-4 mr-2" />
+          <TabsList className="w-full flex-wrap h-auto gap-1">
+            <TabsTrigger value="general" className="flex-1 min-w-[100px]">
+              <Building2 className="w-4 h-4 mr-1.5" />
               General
             </TabsTrigger>
-            <TabsTrigger value="contacto" className="flex-1">
-              <Phone className="w-4 h-4 mr-2" />
+            <TabsTrigger value="contacto" className="flex-1 min-w-[100px]">
+              <Phone className="w-4 h-4 mr-1.5" />
               Contacto
             </TabsTrigger>
-            <TabsTrigger value="horarios" className="flex-1">
-              <Clock className="w-4 h-4 mr-2" />
+            <TabsTrigger value="horarios" className="flex-1 min-w-[100px]">
+              <Clock className="w-4 h-4 mr-1.5" />
               Horarios
+            </TabsTrigger>
+            <TabsTrigger value="roles" className="flex-1 min-w-[80px]">
+              <ShieldCheck className="w-4 h-4 mr-1.5" />
+              Roles
             </TabsTrigger>
           </TabsList>
 
@@ -169,14 +219,14 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
             <div className="space-y-2">
               <Label>Logotipo</Label>
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-20 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
                   {logoUrl ? (
                     <img src={logoUrl} alt="Logo" className="w-full h-full object-cover" />
                   ) : (
                     <ImageIcon className="w-8 h-8 text-slate-400" />
                   )}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <input
                     type="file"
                     accept="image/png,image/jpeg,image/svg+xml,image/webp"
@@ -225,8 +275,8 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
                 inputMode="numeric"
               />
               <p className="text-xs text-slate-500">
-                Se antepone automáticamente a teléfonos locales de 10 dígitos o menos
-                cuando el cliente no tiene código de país. Ej.: 52 (México), 34 (España), 57 (Colombia).
+                Se antepone automáticamente a teléfonos locales de 10 dígitos o menos.
+                Ej.: 52 (México), 34 (España), 57 (Colombia).
               </p>
             </div>
             <div className="flex justify-end pt-2">
@@ -246,9 +296,9 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
               return (
                 <div
                   key={key}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
+                  className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
                 >
-                  <label className="flex items-center gap-2 w-32 cursor-pointer">
+                  <label className="flex items-center gap-2 sm:w-32 cursor-pointer shrink-0">
                     <input
                       type="checkbox"
                       checked={h.activo}
@@ -265,7 +315,7 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
                         onChange={(e) => updateHorario(key, 'apertura', e.target.value)}
                         className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
                       />
-                      <span className="text-slate-500">a</span>
+                      <span className="text-slate-500 shrink-0">a</span>
                       <Input
                         type="time"
                         value={h.cierre}
@@ -274,7 +324,7 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
                       />
                     </div>
                   ) : (
-                    <span className="text-sm text-slate-500 italic flex-1">Cerrado</span>
+                    <span className="text-sm text-slate-500 italic">Cerrado</span>
                   )}
                 </div>
               );
@@ -284,6 +334,67 @@ export const SettingsDialog: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
                 {saving ? 'Guardando...' : 'Guardar Horarios'}
               </Button>
             </div>
+          </TabsContent>
+
+          {/* ROLES */}
+          <TabsContent value="roles" className="space-y-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Define qué módulos de navegación puede ver cada rol. Los cambios aplican
+              cuando los usuarios vuelvan a iniciar sesión o recarguen la app.
+            </p>
+
+            {ROLES_EDITABLES.map(({ rol, label, hint }) => (
+              <div
+                key={rol}
+                className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-4 space-y-3"
+              >
+                <div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">{label}</h4>
+                  <p className="text-xs text-slate-500">{hint}</p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {MODULO_KEYS.map((modulo) => {
+                    const checked = rolesDraft[rol]?.includes(modulo) ?? false;
+                    return (
+                      <label
+                        key={modulo}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer text-sm transition-colors ${
+                          checked
+                            ? 'border-brand/40 bg-brand-soft text-slate-900 dark:text-white'
+                            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleModulo(rol, modulo)}
+                          className="w-4 h-4 accent-brand shrink-0"
+                        />
+                        <span className="truncate">{MODULO_LABELS[modulo]}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                <div className="flex justify-end">
+                  <Button
+                    size="sm"
+                    onClick={() => handleSaveRole(rol)}
+                    disabled={savingRole === rol || rolesDraft[rol].length === 0}
+                    className="bg-gradient-to-r from-brand to-brand-hover"
+                    title={
+                      rolesDraft[rol].length === 0
+                        ? 'Cada rol debe conservar al menos un módulo'
+                        : undefined
+                    }
+                  >
+                    <Save className="w-3.5 h-3.5 mr-1.5" />
+                    {savingRole === rol ? 'Guardando...' : `Guardar ${label}`}
+                  </Button>
+                </div>
+              </div>
+            ))}
           </TabsContent>
         </Tabs>
       </DialogContent>

@@ -80,3 +80,28 @@ export type NegocioUpdate = {
   codigoPais?: string | null;
   horarios?: Record<string, HorarioDia>;
 };
+
+/** Navigation modules that can be enabled/disabled per role. */
+export type ModuloKey = 'dashboard' | 'citas' | 'barberos' | 'servicios' | 'clientes';
+
+export const MODULO_KEYS: ModuloKey[] = [
+  'dashboard',
+  'citas',
+  'barberos',
+  'servicios',
+  'clientes',
+];
+
+export const MODULO_LABELS: Record<ModuloKey, string> = {
+  dashboard: 'Dashboard',
+  citas: 'Citas',
+  barberos: 'Barberos',
+  servicios: 'Servicios',
+  clientes: 'Clientes',
+};
+
+/** Permission matrix row: modules allowed for one role. */
+export interface RolePermission {
+  rol: UserRole;
+  modulos: ModuloKey[];
+}

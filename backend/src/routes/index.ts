@@ -11,6 +11,7 @@ import { barberoRouter } from './barbero.routes.js';
 import { citaRouter } from './cita.routes.js';
 import { clienteRouter } from './cliente.routes.js';
 import { negocioRouter } from './negocio.routes.js';
+import { roleRouter } from './role.routes.js';
 import { servicioRouter } from './servicio.routes.js';
 
 export const apiRouter = Router();
@@ -27,3 +28,4 @@ apiRouter.use('/clientes', clienteRouter);
 apiRouter.use('/servicios', servicioRouter);
 apiRouter.use('/citas', citaRouter);
 apiRouter.use('/negocio', negocioRouter);
+apiRouter.use('/roles', roleRouter);

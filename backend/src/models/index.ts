@@ -59,6 +59,23 @@ export interface CitaDetallada extends Cita {
   servicio: Servicio;
 }
 
+/** Navigation modules that can be enabled/disabled per role. */
+export type ModuloKey = 'dashboard' | 'citas' | 'barberos' | 'servicios' | 'clientes';
+
+export const MODULO_KEYS: ModuloKey[] = [
+  'dashboard',
+  'citas',
+  'barberos',
+  'servicios',
+  'clientes',
+];
+
+/** Permission matrix: modules allowed per role. */
+export interface RolePermission {
+  rol: UserRole;
+  modulos: ModuloKey[];
+}
+
 /** Internal request context, populated by the auth middleware. */
 export interface AuthContext {
   authUserId: string;
