@@ -16,10 +16,16 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const { negocio } = useNegocio();
+  const [view, setView] = useState<'login' | 'forgot'>('login');
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +45,38 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  /** Sends the Supabase recovery email with a redirect back into the app. */
+  const handleForgotSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResetError('');
+    setResetLoading(true);
+    try {
+      const { error: resetErr } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (resetErr) {
+        setResetError(resetErr.message);
+        return;
+      }
+      setResetSent(true);
+    } catch (err) {
+      setResetError(err instanceof Error ? err.message : 'No se pudo enviar el enlace');
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
+  const goForgot = () => {
+    setView('forgot');
+    setResetSent(false);
+    setResetError('');
+  };
+
+  const goLogin = () => {
+    setView('login');
+    setError('');
   };
 
   const loginRapido = (userEmail: string) => {
@@ -71,75 +109,150 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             Sistema de Gestión de Citas
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-300">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-300">Contraseña</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
-                  required
-                />
-              </div>
-            </div>
+          {view === 'login' ? (
+            <>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-slate-300">Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="tu@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-slate-300">Contraseña</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
+                      required
+                    />
+                  </div>
+                </div>
 
-            {error && (
-              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                {error}
+                {error && (
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover text-white"
+                >
+                  {loading ? 'Ingresando...' : 'Iniciar Sesión'}
+                </Button>
+
+                {/* Enlace de recuperación — estilo del proyecto */}
+                <button
+                  type="button"
+                  onClick={goForgot}
+                  className="block mx-auto text-xs text-brand hover:text-brand-hover transition-colors"
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </form>
+
+              <div className="mt-6 space-y-2">
+                <p className="text-xs text-slate-500 text-center">Acceso rápido de demostración:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loginRapido('admin@barberia.com')}
+                    className="border-slate-700 bg-slate-800/30 text-slate-300 hover:bg-slate-800 hover:text-white"
+                  >
+                    Admin
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loginRapido('miguel@barberia.com')}
+                    className="border-slate-700 bg-slate-800/30 text-slate-300 hover:bg-slate-800 hover:text-white"
+                  >
+                    Barbero
+                  </Button>
+                </div>
               </div>
-            )}
+            </>
+          ) : (
+            /* ── Vista: recuperar contraseña ── */
+            resetSent ? (
+              <div className="space-y-4">
+                <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
+                  Te enviamos un enlace de recuperación a <strong>{email}</strong>.
+                  Revisa tu bandeja de entrada (y la carpeta de spam).
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={goLogin}
+                  className="w-full border-slate-700 bg-slate-800/30 text-slate-300 hover:bg-slate-800 hover:text-white"
+                >
+                  Volver al inicio de sesión
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleForgotSubmit} className="space-y-4">
+                <p className="text-sm text-slate-400">
+                  Escribe tu correo y te enviaremos un enlace para restablecer tu contraseña.
+                </p>
+                <div className="space-y-2">
+                  <Label htmlFor="reset-email" className="text-slate-300">Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="reset-email"
+                      type="email"
+                      placeholder="tu@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <Button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover text-white"
-            >
-              {loading ? 'Ingresando...' : 'Iniciar Sesión'}
-            </Button>
-          </form>
+                {resetError && (
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    {resetError}
+                  </div>
+                )}
 
-          <div className="mt-6 space-y-2">
-            <p className="text-xs text-slate-500 text-center">Acceso rápido de demostración:</p>
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => loginRapido('admin@barberia.com')}
-                className="border-slate-700 bg-slate-800/30 text-slate-300 hover:bg-slate-800 hover:text-white"
-              >
-                Admin
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => loginRapido('miguel@barberia.com')}
-                className="border-slate-700 bg-slate-800/30 text-slate-300 hover:bg-slate-800 hover:text-white"
-              >
-                Barbero
-              </Button>
-            </div>
-          </div>
+                <Button
+                  type="submit"
+                  disabled={resetLoading}
+                  className="w-full bg-gradient-to-r from-brand to-brand-hover hover:from-brand-hover hover:to-brand-hover text-white"
+                >
+                  {resetLoading ? 'Enviando...' : 'Enviar enlace de recuperación'}
+                </Button>
+
+                <button
+                  type="button"
+                  onClick={goLogin}
+                  className="block mx-auto text-xs text-brand hover:text-brand-hover transition-colors"
+                >
+                  Volver al inicio de sesión
+                </button>
+              </form>
+            )
+          )}
         </CardContent>
       </Card>
     </div>

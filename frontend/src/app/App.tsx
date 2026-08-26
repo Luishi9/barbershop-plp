@@ -3,6 +3,7 @@ import { User } from '@/types';
 import { supabase } from '@/services/supabase';
 import { getMe } from '@/services/api';
 import { LoginPage } from '@/app/components/LoginPage';
+import { ResetPasswordPage } from '@/app/components/ResetPasswordPage';
 import { AppShell } from '@/app/components/layout/AppShell';
 import { Toaster } from '@/app/components/ui/sonner';
 
@@ -45,6 +46,12 @@ export default function App() {
     await supabase.auth.signOut();
     setUser(null);
   };
+
+  // Standalone route: landing of the Supabase recovery email.
+  // Must come after all hooks (they always run; this only changes the render).
+  if (window.location.pathname === '/reset-password') {
+    return <ResetPasswordPage />;
+  }
 
   if (loading) {
     return (

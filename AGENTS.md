@@ -261,6 +261,7 @@ Código limpio, predecible y escalable siempre es mejor que soluciones rápidas 
 3. Si no hay sesión → renderiza `LoginPage`.
 4. Login exitoso → `supabase.auth.signInWithPassword()` → `onAuthStateChange` dispara → carga perfil → renderiza dashboard.
 5. Logout → `supabase.auth.signOut()` → estado limpio → vuelve a `LoginPage`.
+6. Recuperación de contraseña: "¿Olvidaste tu contraseña?" → `resetPasswordForEmail(email, { redirectTo: /reset-password })` → el usuario abre el enlace del correo → `ResetPasswordPage` detecta `PASSWORD_RECOVERY` (o sesión del enlace) → define nueva contraseña con `updateUser()` → signOut forzado → re-login manual. Requiere Redirect URL `/reset-password` en Supabase Auth.
 
 ### Flujo 2 — Gestión de Citas
 1. Admin/Barbero crea cita desde `NewAppointmentDialog` (puede crear cliente nuevo en el momento).
