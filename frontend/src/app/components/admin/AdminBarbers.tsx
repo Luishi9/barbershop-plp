@@ -114,7 +114,7 @@ export const AdminBarbers: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
             {barberos.map((barbero) => (
               <Card key={barbero.id} className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700">
                 <CardContent className="p-4">

@@ -95,7 +95,7 @@ export const AdminServices: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             {servicios.map((servicio) => (
               <Card key={servicio.id} className="bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700">
                 <CardContent className="p-4">
@@ -126,12 +126,12 @@ export const AdminServices: React.FC = () => {
                   </div>
 
                   {servicio.descripcion && (
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">{servicio.descripcion}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-200 mb-3">{servicio.descripcion}</p>
                   )}
 
                   <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500 dark:text-slate-500">Precio</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-300">Precio</span>
                         <span className="text-xl font-bold text-brand">${servicio.precio}</span>
                     </div>
                   </div>

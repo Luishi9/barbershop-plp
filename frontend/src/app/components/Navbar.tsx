@@ -29,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user }) => {
           )}
           <div className="min-w-0">
             <h1 className="text-lg md:text-xl font-bold text-white truncate">
-              {negocio?.nombre ?? 'Barbería'}
+              {negocio?.nombre ?? 'Agenda tu cita'}
             </h1>
             <p className="hidden sm:block text-xs text-slate-400 truncate">
               {user.rol === 'admin' ? 'Panel de Administración' : 'Panel de Barbero'}

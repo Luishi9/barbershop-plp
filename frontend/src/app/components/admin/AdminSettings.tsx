@@ -201,9 +201,11 @@ export const AdminSettings: React.FC = () => {
                             <Label>Nombre del negocio</Label>
                             <Input
                                 value={nombre}
+                                id="nombre-negocio"
                                 onChange={(e) => setNombre(e.target.value)}
                                 placeholder="Barbería"
                                 maxLength={100}
+                                className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
                             />
                         </div>
 

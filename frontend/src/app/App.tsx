@@ -5,7 +5,6 @@ import { getMe } from '@/services/api';
 import { LoginPage } from '@/app/components/LoginPage';
 import { ResetPasswordPage } from '@/app/components/ResetPasswordPage';
 import { AppShell } from '@/app/components/layout/AppShell';
-import { Toaster } from '@/app/components/ui/sonner';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -66,9 +65,6 @@ export default function App() {
   }
 
   return (
-    <>
-      <AppShell user={user} onLogout={handleLogout} />
-      <Toaster />
-    </>
+    <AppShell user={user} onLogout={handleLogout} />
   );
 }

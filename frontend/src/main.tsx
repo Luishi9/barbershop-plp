@@ -2,6 +2,8 @@
   import { createRoot } from "react-dom/client";
   import App from "./app/App.tsx";
   import { NegocioProvider } from "@/context/NegocioContext";
+  import { Toaster } from "@/app/components/ui/sonner";
+  import { registerServiceWorker } from "@/pwa/registerServiceWorker";
   import "./styles/index.css";
 
   // NegocioProvider vive en la raíz para que CUALQUIER componente de la app
@@ -9,5 +11,12 @@
   createRoot(document.getElementById("root")!).render(
     <NegocioProvider>
       <App />
+      {/* Toaster global: también muestra avisos PWA en el login */}
+      <Toaster />
     </NegocioProvider>
   );
+
+  // PWA: registra el service worker solo en producción (dev no lo necesita).
+  if (import.meta.env.PROD) {
+    registerServiceWorker();
+  }
