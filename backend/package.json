@@ -5,9 +5,9 @@
   "type": "module",
   "description": "Backend Express (MVC) API for Barber-Shop. Talks to Supabase Postgres with service-role key and verifies Supabase Auth JWTs.",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/server.js",
+    "dev": "node api.js && tsx watch src/server.ts",
+    "build": "node api.js && tsc -p tsconfig.json",
+    "start": "node api.js && node dist/server.js",
     "seed": "tsx database/seed.ts",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
