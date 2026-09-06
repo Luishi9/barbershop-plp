@@ -1,6 +1,7 @@
 /**
  * Generates the PWA icon set in public/ from an inline SVG that mirrors the
- * app fallback logo (brand gradient + white scissors on blue gradient).
+ * app fallback logo style (white glyph on brand gradient).
+ * Glyph: calendar with a checkmark — the system is about booking citas.
  * Run with: npm run generate:icons
  * Replace the generated PNGs manually to use a custom brand icon.
  */
@@ -12,16 +13,16 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
 
-// Open scissors pointing right: two finger rings on the left, blades
-// crossing at a pivot dot on the right. Drawn in the 512x512 space.
-const SCISSORS = `
-  <g stroke="#ffffff" stroke-width="30" stroke-linecap="round" fill="none">
-    <circle cx="140" cy="165" r="45"/>
-    <circle cx="140" cy="347" r="45"/>
-    <path d="M196 180 L425 310"/>
-    <path d="M196 332 L425 190"/>
+// Calendar with a checkmark (confirmed appointment) drawn in the 512x512 space.
+const CALENDAR = `
+  <g stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect x="96" y="140" width="320" height="280" rx="36"/>
+    <line x1="96" y1="224" x2="416" y2="224"/>
+    <line x1="180" y1="104" x2="180" y2="176"/>
+    <line x1="332" y1="104" x2="332" y2="176"/>
   </g>
-  <circle cx="324" cy="253" r="15" fill="#ffffff"/>
+  <polyline points="180,330 236,386 336,286" fill="none" stroke="#ffffff"
+    stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
 `;
 
 /** Builds a 512px SVG icon. rounded=false gives a full-bleed square (maskable/apple). */
@@ -32,8 +33,8 @@ const buildSvg = ({ rounded, glyphScale = 1 }) => {
   // glyphScale shrinks the glyph around the center (maskable safe zone).
   const glyph =
     glyphScale === 1
-      ? SCISSORS
-      : `<g transform="translate(256 256) scale(${glyphScale}) translate(-256 -256)">${SCISSORS}</g>`;
+      ? CALENDAR
+      : `<g transform="translate(256 256) scale(${glyphScale}) translate(-256 -256)">${CALENDAR}</g>`;
   return `
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
