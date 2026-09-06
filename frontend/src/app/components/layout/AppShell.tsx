@@ -103,14 +103,14 @@ export const AppShell: React.FC<AppShellProps> = ({ user, onLogout }) => {
   const isActive = (item: NavItem) => section === item.key;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-dvh bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <Navbar user={user} />
 
       <div className="flex">
         {/* ── Sidebar (desktop only) ─────────────────────────────── */}
         <aside
           aria-label="Navegación principal"
-          className="hidden lg:flex flex-col sticky top-0 h-screen w-60 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 gap-1"
+          className="hidden lg:flex flex-col sticky top-[var(--navbar-height)] h-[calc(100dvh-var(--navbar-height))] w-60 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 gap-1"
         >
           {items.map((item) => {
             const Icon = item.icon;

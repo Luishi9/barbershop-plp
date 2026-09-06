@@ -13,8 +13,8 @@ export const Navbar: React.FC<NavbarProps> = ({ user }) => {
   const { negocio } = useNegocio();
 
   return (
-    <nav className="bg-slate-900 dark:bg-slate-900 border-b border-slate-800 px-4 md:px-6 py-3 md:py-4">
-      <div className="flex items-center justify-between max-w-[1600px] mx-auto">
+    <nav className="sticky top-0 z-30 h-[var(--navbar-height)] bg-slate-900 dark:bg-slate-900 border-b border-slate-800 px-4 md:px-6">
+      <div className="flex h-full items-center justify-between max-w-[1600px] mx-auto">
         <div className="flex items-center gap-3 min-w-0">
           {negocio?.logoUrl ? (
             <img

@@ -53,6 +53,19 @@
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
+
+  /* Fixed top navbar height — used by the sticky navbar and the
+     sidebar calc(100dvh - var(--navbar-height)) so both add up to
+     exactly one viewport with no phantom page scroll */
+  --navbar-height: 3.5rem;
+}
+
+@media (min-width: 40rem) {
+  :root { --navbar-height: 4rem; }
+}
+
+@media (min-width: 48rem) {
+  :root { --navbar-height: 5rem; }
 }
 
 .dark {
